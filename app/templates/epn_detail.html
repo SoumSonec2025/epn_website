@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ epn.nom }} - DGEPN{% endblock %}
+
+{% block content %}
+    <div class="card shadow-sm">
+        <div class="card-header bg-orange text-white">
+            <h3 class="mb-0"><i class="fas fa-building me-2"></i> {{ epn.nom }} ({{ epn.sigle }})</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><i class="fas fa-landmark me-2"></i> <strong>Tutelle :</strong> {{ epn.tutelle }}</p>
+                    <p><i class="fas fa-tags me-2"></i> <strong>Catégorie juridique :</strong> {{ epn.categorie }}</p>
+                    <p><i class="fas fa-map-marker-alt me-2"></i> <strong>Région :</strong> {{ epn.region }}</p>
+                    <p><i class="fas fa-user me-2"></i> <strong>Directeur :</strong> {{ epn.directeur }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><i class="fas fa-envelope me-2"></i> <strong>Email :</strong> <a href="mailto:{{ epn.email }}">{{ epn.email }}</a></p>
+                    <p><i class="fas fa-file-alt me-2"></i> <strong>Décret de création :</strong> {{ epn.decret }}</p>
+                    <p><i class="fas fa-calendar-alt me-2"></i> <strong>Date de création :</strong> {{ epn.date_creation }}</p>
+                </div>
+            </div>
+            <div class="mt-3">
+                <a href="{{ url_for('main.epn_directory') }}" class="btn btn-outline-orange me-2"><i class="fas fa-arrow-left me-1"></i> Retour à l'annuaire</a>
+                {% if epn.decret != 'Non spécifié' %}
+                <a href="{{ url_for('main.download_decret', id=epn.id) }}" class="btn btn-orange"><i class="fas fa-download me-1"></i> Télécharger le décret</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

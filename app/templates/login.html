@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Connexion Intranet - DGEPN{% endblock %}
+
+{% block content %}
+    <h1 class="text-orange mb-4 text-center">Connexion à l’Intranet de la DGEPN</h1>
+    <p class="lead text-muted text-center">Accédez à votre espace sécurisé.</p>
+
+    <div class="card shadow-sm w-50 mx-auto">
+        <div class="card-body">
+            <form method="#" action="{{ url_for('main.intranet') }}">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Utilisateur</label>
+                    <input type="text" class="form-control" id="username" placeholder="Nom d’utilisateur">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Mot de passe</label>
+                    <input type="password" class="form-control" id="password" placeholder="Mot de passe">
+                </div>
+                <div class="mb-3">
+                    <label for="code" class="form-label">Code de vérification</label>
+                    <input type="text" class="form-control" id="code" placeholder="Code à 6 chiffres">
+                </div>
+                <button type="submit" class="btn btn-orange w-100"><i class="fas fa-sign-in-alt"></i> Se connecter</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

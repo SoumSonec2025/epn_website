@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block title %}Accueil - DGEPN{% endblock %}
+
+{% block content %}
+    <!-- Hero Carousel -->
+    <div id="heroCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{{ url_for('static', filename='img/img.png') }}" class="d-block w-100 carousel-img" alt="Bienvenue">
+                <div class="carousel-caption d-none d-md-block animate__animated animate__fadeInUp" data-animate-delay="100">
+                    <h3 class="text-white">Ensemble pour une décentralisation inclusive</h3>
+                    <p class="text-white">Découvrez les Établissements Publics Nationaux de Côte d'Ivoire.</p>
+                    <a href="{{ url_for('main.epn_directory') }}" class="btn btn-primary rounded-pill ripple">Explorer l'annuaire</a>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="{{ url_for('static', filename='img/img_7.png') }}" class="d-block w-100 carousel-img" alt="Actualités">
+                <div class="carousel-caption d-none d-md-block animate__animated animate__fadeInUp" data-animate-delay="100">
+                    <h3 class="text-white">Restez informé</h3>
+                    <p class="text-white">Consultez nos dernières actualités et événements.</p>
+                    <a href="{{ url_for('main.news') }}" class="btn btn-primary rounded-pill ripple">Voir les actualités</a>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="{{ url_for('static', filename='img/img_5.png') }}" class="d-block w-100 carousel-img" alt="Actualités">
+                <div class="carousel-caption d-none d-md-block animate__animated animate__fadeInUp" data-animate-delay="100">
+                    <h3 class="text-white">Notre mission et services  </h3>
+                    <p class="text-white">Consultez nos services et missions.</p>
+                    <a href="{{ url_for('main.services') }}" class="btn btn-primary rounded-pill ripple">Voir les services</a>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Précédent</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Suivant</span>
+        </button>
+    </div>
+
+    <h1 class="text-green mb-4 animate__animated animate__fadeInUp"><i class="fas fa-home me-2"></i> Bienvenue sur la plateforme de la Direction générale des Etablissements Publics Nationaux</h1>
+    <p class="lead text-secondary mb-5 animate__animated animate__fadeInUp" data-animate-delay="100">Votre portail centralisé pour explorer les Établissements Publics Nationaux, les services, et les actualités en Côte d'Ivoire.</p>
+
+    <!-- Actualités récentes -->
+    <section class="my-5">
+        <h2 class="text-orange mb-4 animate__animated animate__fadeInUp" data-animate-delay="200"><i class="fas fa-newspaper me-2"></i> Actualités récentes</h2>
+        <div id="newsCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                {% for actualite in actualites %}
+                <div class="carousel-item {% if loop.first %}active{% endif %}">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img src="{{ actualite.image }}" class="img-fluid rounded shadow-sm" alt="{{ actualite.title }}" style="height: 200px; object-fit: cover;">
+                        </div>
+                        <div class="col-md-6 d-flex align-items-center">
+                            <div class="card shadow-lg border-0 w-100">
+                                <div class="card-body">
+                                    <h4 class="text-green">{{ actualite.title }}</h4>
+                                    <p class="text-muted">{{ actualite.date }}</p>
+                                    <p>{{ actualite.summary }}</p>
+                                    <a href="{{ url_for('main.news_detail', id=actualite.id) }}" class="btn btn-outline-primary rounded-pill">En savoir plus</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#newsCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Précédent</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#newsCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Suivant</span>
+            </button>
+        </div>
+    </section>
+
+    <!-- Liste des services -->
+    <section class="my-5">
+        <h2 class="text-orange mb-4 animate__animated animate__fadeInUp" data-animate-delay="300"><i class="fas fa-cogs me-2"></i> Services</h2>
+        <div class="row">
+            {% for actualite in actualites %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-lg h-100 animate__animated animate__fadeInUp" data-animate-delay="{{ 400 + loop.index0 * 100 }}">
+                    <img src="{{ actualite.image }}" class="card-img-top" alt="{{ actualite.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title text-green">{{ actualite.title }}</h5>
+                        <p class="text-muted">{{ actualite.date }}</p>
+                        <p class="card-text">{{ actualite.summary }}</p>
+                        <a href="{{ url_for('main.news_detail', id=actualite.id) }}" class="btn btn-outline-primary rounded-pill">Lire plus</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

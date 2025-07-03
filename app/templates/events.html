@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}Événements - DGEPN{% endblock %}
+
+{% block content %}
+    <h1 class="text-orange mb-4 animate__animated animate__fadeInUp"><i class="fas fa-calendar-alt me-2"></i> Événements</h1>
+    <p class="lead text-secondary mb-5 animate__animated animate__fadeInUp" data-animate-delay="100">Participez aux événements organisés par la DGEPN et ses partenaires.</p>
+
+    <!-- Events Carousel -->
+    <div id="eventsCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            {% for evenement in evenements %}
+            <div class="carousel-item {% if loop.first %}active{% endif %} animate__animated animate__fadeInUp" data-animate-delay="200">
+                <div class="carousel-img-wrapper">
+                    <img src="{{ evenement.image }}" class="carousel-img d-block w-100" alt="{{ evenement.title }}">
+                    <div class="carousel-img-overlay"></div>
+                    <div class="carousel-caption d-none d-md-block">
+                        <h4 class="text-white">{{ evenement.title }}</h4>
+                        <p class="text-white">{{ evenement.date }} - {{ evenement.location }}</p>
+                        <p class="text-white">{{ evenement.description }}</p>
+                        <a href="{{ url_for('main.event_detail', id=evenement.id) }}" class="btn btn-primary rounded-pill ripple">En savoir plus</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#eventsCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Précédent</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#eventsCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Suivant</span>
+        </button>
+    </div>
+
+    <!-- Events List -->
+    <section class="my-5">
+        <h2 class="text-orange mb-4 animate__animated animate__fadeInUp" data-animate-delay="300"><i class="fas fa-bullhorn me-2"></i> Événements Récents</h2>
+        <div class="row">
+            {% for evenement in evenements %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-lg h-100 animate__animated animate__fadeInUp" data-animate-delay="{{ 300 + loop.index0 * 100 }}">
+                    <img src="{{ evenement.image }}" class="card-img-top" alt="{{ evenement.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title text-green">{{ evenement.title }}</h5>
+                        <p class="text-muted">{{ evenement.date }} - {{ evenement.location }}</p>
+                        <p class="card-text">{{ evenement.description }}</p>
+                        <a href="{{ url_for('main.event_detail', id=evenement.id) }}" class="btn btn-outline-primary rounded-pill">Détails</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Calendar -->
+    <section class="my-5">
+        <h2 class="text-orange mb-4 animate__animated animate__fadeInUp" data-animate-delay="400"><i class="fas fa-calendar me-2"></i> Calendrier des Événements</h2>
+        <div class="mb-4">
+            <select id="event-status-filter" class="form-control rounded-pill w-auto">
+                <option value="">Tous les événements</option>
+                <option value="upcoming">À venir</option>
+                <option value="ongoing">En cours</option>
+                <option value="past">Passés</option>
+            </select>
+        </div>
+        <div id="calendar" class="animate__animated animate__fadeInUp" data-animate-delay="500"></div>
+    </section>
+
+    <!-- FullCalendar CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
+{% endblock %}

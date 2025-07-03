@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}Actualités - DGEPN{% endblock %}
+
+{% block content %}
+    <h1 class="text-orange mb-4 animate__animated animate__fadeInUp"><i class="fas fa-newspaper me-2"></i> Actualités</h1>
+    <p class="lead text-secondary mb-5 animate__animated animate__fadeInUp" data-animate-delay="100">Restez informé des dernières nouvelles concernant la DGEPN et les Établissements Publics Nationaux.</p>
+
+    <!-- News Carousel -->
+    <div id="newsCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            {% for actualite in actualites %}
+            <div class="carousel-item {% if loop.first %}active{% endif %} animate__animated animate__fadeInUp" data-animate-delay="200">
+                <div class="carousel-img-wrapper">
+                    <img src="{{ actualite.image }}" class="carousel-img d-block w-100" alt="{{ actualite.title }}">
+                    <div class="carousel-img-overlay"></div>
+                    <div class="carousel-caption d-none d-md-block">
+                        <h4 class="text-white">{{ actualite.title }}</h4>
+                        <p class="text-white">{{ actualite.date }}</p>
+                        <p class="text-white">{{ actualite.summary }}</p>
+                        <a href="{{ url_for('main.news_detail', id=actualite.id) }}" class="btn btn-primary rounded-pill ripple">En savoir plus</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#newsCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Précédent</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#newsCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Suivant</span>
+        </button>
+    </div>
+
+    <!-- Recent News -->
+    <section class="my-5">
+        <h2 class="text-orange mb-4 animate__animated animate__fadeInUp" data-animate-delay="300"><i class="fas fa-bullhorn me-2"></i> Dernières Actualités</h2>
+        <div class="row">
+            {% for actualite in actualites %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-lg h-100 animate__animated animate__fadeInUp" data-animate-delay="{{ 300 + loop.index0 * 100 }}">
+                    <img src="{{ actualite.image }}" class="card-img-top" alt="{{ actualite.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title text-green">{{ actualite.title }}</h5>
+                        <p class="text-muted">{{ actualite.date }}</p>
+                        <p class="card-text">{{ actualite.summary }}</p>
+                        <a href="{{ url_for('main.news_detail', id=actualite.id) }}" class="btn btn-outline-primary rounded-pill">Lire plus</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Archives -->
+    <section class="my-5">
+        <h2 class="text-orange mb-4 animate__animated animate__fadeInUp" data-animate-delay="400"><i class="fas fa-archive me-2"></i> Archives</h2>
+        <div class="mb-4">
+            <select id="archive-year-filter" class="form-control rounded-pill w-auto">
+                <option value="">Tous les ans</option>
+                {% for year in ['2024', '2023', '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2015', '2014', '2012', '2011', '2010'] %}
+                <option value="{{ year }}">{{ year }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <table class="table table-striped table-hover shadow-lg" id="archive-list">
+            <thead>
+                <tr>
+                    <th scope="col" class="text-green">Titre</th>
+                    <th scope="col" class="text-muted">Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for archive in archives %}
+                <tr class="animate__animated animate__fadeInUp" data-year="{{ archive.date.split('-')[0] }}" data-animate-delay="{{ 400 + loop.index0 * 100 }}">
+                    <td>
+                        <a href="{{ url_for('main.news_detail', id=archive.id) }}" class="text-green text-decoration-none">{{ archive.title }}</a>
+                    </td>
+                    <td class="text-muted">{{ archive.date }}</td>
+                </tr>
+                {% endfor %}
+        </tbody>
+        </table>
+    </section>
+{% endblock %}

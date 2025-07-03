@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Suggestions - DGEPN{% endblock %}
+
+{% block content %}
+    <h1 class="text-orange mb-4">Suggestions</h1>
+    <p class="lead text-muted">Partagez vos idées pour améliorer nos services et notre plateforme.</p>
+
+    <!-- Formulaire -->
+    <div class="card shadow-sm mb-5">
+        <div class="card-body">
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div class="mb-3">
+                    <label class="form-label">{{ form.name.label }}</label>
+                    {{ form.name(class="form-control") }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">{{ form.email.label }}</label>
+                    {{ form.email(class="form-control") }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">{{ form.subject.label }}</label>
+                    {{ form.subject(class="form-control") }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">{{ form.description.label }}</label>
+                    {{ form.description(class="form-control", rows=5) }}
+                </div>
+                {{ form.submit(class="btn btn-orange") }}
+            </form>
+        </div>
+    </div>
+
+    <!-- Suggestions publiques -->
+    <h3 class="text-orange mb-4">Suggestions approuvées</h3>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <p class="text-muted">Consultez les suggestions approuvées par notre équipe (fonctionnalité à venir).</p>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Amélioration de l’annuaire EPN <span class="badge bg-green text-white ms-2">Approuvé</span></li>
+                <li class="list-group-item">Ajout d’un calendrier interactif <span class="badge bg-green text-white ms-2">Approuvé</span></li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

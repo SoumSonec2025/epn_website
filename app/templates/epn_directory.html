@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Annuaire des EPN - DGEPN{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4 text-orange"><i class="fas fa-building me-2"></i> Annuaire des Établissements Publics Nationaux</h1>
+    <p class="lead text-muted">Explorez la liste complète des EPN en Côte d'Ivoire, avec des informations détaillées et des options de filtrage.</p>
+
+    <!-- Filtres -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form class="row g-3" id="epn-filter-form">
+                <div class="col-md-4">
+                    <label for="search-input" class="form-label">Recherche par nom ou sigle</label>
+                    <input type="text" class="form-control" id="search-input" placeholder="Ex. AEJ ou Agence Emploi">
+                </div>
+                <div class="col-md-4">
+                    <label for="filter-categorie" class="form-label">Catégorie</label>
+                    <select class="form-select" id="filter-categorie">
+                        <option value="">Toutes</option>
+                        <option value="EPA">EPA</option>
+                        <option value="EPIC">EPIC</option>
+                        <option value="Structures assimilées">Structures assimilées</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="filter-region" class="form-label">Région</label>
+                    <select class="form-select" id="filter-region">
+                        <option value="">Toutes</option>
+                        <option value="Abidjan">Abidjan</option>
+                        <option value="Yamoussoukro">Yamoussoukro</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Liste des EPN -->
+    <div class="row" id="epn-list">
+        {% for epn in epns %}
+        <div class="col-md-4 mb-3 epn-card" data-nom="{{ epn.nom | lower }}" data-sigle="{{ epn.sigle | lower }}" data-categorie="{{ epn.categorie }}" data-tutelle="{{ epn.tutelle }}" data-region="{{ epn.region }}">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="text-green card-title">{{ epn.nom }} ({{ epn.sigle }})</h5>
+                    <p class="card-text">
+                        <strong>Région :</strong> {{ epn.region }}<br>
+                        <strong>Tutelle :</strong> {{ epn.tutelle }}<br>
+                        <strong>Catégorie :</strong> {{ epn.categorie }}
+                    </p>
+                    <a href="{{ url_for('main.epn_detail', id=epn.id) }}" class="btn btn-outline-primary">Détails</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Carte interactive -->
+    <section class="my-5">
+        <h2 class="mb-3"><i class="fas fa-map-marked-alt me-2"></i> Localisation des EPN</h2>
+        <div id="map" class="shadow-sm"></div>
+    </section>
+
+    <script>
+        // Pass EPN data to JavaScript
+        const epns = {{ epns | tojson }};
+    </script>
+{% endblock %}

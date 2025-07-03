@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block title %}À propos - DGEPN{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4 text-green" ><i class="fas fa-info-circle me-2 text-green"></i> À propos de la DGEPN</h1>
+    <p class="lead text-secondary">Découvrez la Direction Générale des Établissements Publics Nationaux, son rôle, ses valeurs et son organisation.</p>
+
+    <!-- Carrousel À propos -->
+    <div id="aboutCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            {% for section in about_sections %}
+            <div class="carousel-item {% if loop.first %}active{% endif %}">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img src="{{ section.image }}" class="img-fluid rounded" alt="{{ section.title }}">
+                    </div>
+                    <div class="col-md-6 d-flex align-items-center">
+                        <div>
+                            <h3 class="text-green">{{ section.title }}</h3>
+                            <div class="content">{{ section.content | safe }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#aboutCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Précédent</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#aboutCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Suivant</span>
+        </button>
+    </div>
+
+    <!-- Historique -->
+    <section id="historique" class="my-5">
+        <h2 class="mb-4 text-green"><i class="fas fa-history me-2 text-green"></i> Historique</h2>
+        <div class="timeline">
+            {% set history_events = [
+                {
+                    'year': '2010',
+                    'title': 'Création de la DGEPN',
+                    'description': 'La Direction Générale des Établissements Publics Nationaux est fondée pour superviser les entreprises publiques en Côte d\'Ivoire.',
+                    'image': url_for('static', filename='img/img_4.png')
+                },
+                {
+                    'year': '2015',
+                    'title': 'Modernisation des Processus',
+                    'description': 'Lancement d\'initiatives pour digitaliser la gestion des EPN, améliorant la transparence et l\'efficacité.',
+                    'image': url_for('static', filename='img/img_4.png')
+                },
+                {
+                    'year': '2020',
+                    'title': 'Expansion des Services',
+                    'description': 'Introduction de nouveaux services de support aux EPN, renforçant leur gouvernance et performance.',
+                    'image': url_for('static', filename='img/img_4.png')
+                },
+                {
+                    'year': '2025',
+                    'title': 'Vision 2025',
+                    'description': 'Adoption d\'une stratégie ambitieuse pour promouvoir l\'innovation et la durabilité dans les EPN.',
+                    'image': url_for('static', filename='img/img_4.png')
+                }
+            ] %}
+            {% for event in history_events %}
+            <div class="timeline-item {% if loop.index is odd %}left{% else %}right{% endif %} animate__animated" data-animate="fadeInUp">
+                <div class="timeline-content card shadow-sm">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img src="{{ event.image }}" class="img-fluid rounded" alt="{{ event.title }}">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title text-orange">{{ event.year }} - {{ event.title }}</h5>
+                                <p class="card-text text-muted">{{ event.description }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+<!-- Organigramme -->
+    <section class="my-5">
+        <h2 class="mb-4 text-green"><i class="fas fa-sitemap me-2 text-green"></i> Organigramme</h2>
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div id="orgChart" class="org-chart position-relative">
+                    <div class="org-node level-1 animate__animated animate__fadeInDown" data-id="1" style="left: calc(50% - 70px); top: 20px;">
+                        <span>Directeur Général</span>
+                    </div>
+                    <div class="org-node level-2 animate__animated animate__fadeInDown" data-id="2" data-parent="1" style="left: calc(15% - 70px); top: 120px;">
+                        <span>Direction Administrative</span>
+                    </div>
+                    <div class="org-node level-2 animate__animated animate__fadeInDown" data-id="3" data-parent="1" style="left: calc(50% - 70px); top: 120px;">
+                        <span>Direction Technique</span>
+                    </div>
+                    <div class="org-node level-2 animate__animated animate__fadeInDown" data-id="4" data-parent="1" style="left: calc(85% - 70px); top: 120px;">
+                        <span>Direction Juridique</span>
+                    </div>
+                    <div class="org-node level-3 animate__animated animate__fadeInDown" data-id="5" data-parent="2" style="left: calc(10% - 70px); top: 220px;">
+                        <span>Service RH</span>
+                    </div>
+                    <div class="org-node level-3 animate__animated animate__fadeInDown" data-id="7" data-parent="3" style="left: calc(50% - 70px); top: 220px;">
+                        <span>Service IT</span>
+                    </div>
+                    <div class="org-node level-3 animate__animated animate__fadeInDown" data-id="8" data-parent="4" style="left: calc(85% - 70px); top: 220px;">
+                        <span>Service Contrats</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

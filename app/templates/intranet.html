@@ -1,0 +1,385 @@
+{% extends 'base.html' %}
+
+{% block title %}Intranet - DGEPN{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-5">
+    <!-- Flash Messages -->
+    {% if flash_infos %}
+    <div id="flash-info" class="alert alert-info alert-dismissible fade show animate__animated animate__fadeIn" role="alert">
+        {% for info in flash_infos %}
+        <p>{{ info }}</p>
+        {% endfor %}
+        <button type="button" class="btn-close" id="close-flash" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+
+    <h1 class="text-primary mb-4 text-center"><i class="fas fa-tachometer-alt me-2"></i> Intranet DGEPN</h1>
+    <p class="lead text-muted text-center">Espace sécurisé pour les acteurs institutionnels : DGEPN, EPN et ministères de tutelle.</p>
+
+    <!-- Dashboard Navigation -->
+    <ul class="nav nav-tabs mb-4" id="intranetTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="governance-tab" data-bs-toggle="tab" data-bs-target="#governance" type="button" role="tab" aria-controls="governance" aria-selected="true">Gouvernance</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="communication-tab" data-bs-toggle="tab" data-bs-target="#communication" type="button" role="tab" aria-controls="communication" aria-selected="false">Communication</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="documents-tab" data-bs-toggle="tab" data-bs-target="#documents" type="button" role="tab" aria-controls="documents" aria-selected="false">Gestion documentaire</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="epn-support-tab" data-bs-toggle="tab" data-bs-target="#epn-support" type="button" role="tab" aria-controls="epn-support" aria-selected="false">Support EPN</button>
+        </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content" id="intranetTabContent">
+        <!-- Governance and Steering -->
+        <div class="tab-pane fade show active" id="governance" role="tabpanel" aria-labelledby="governance-tab">
+            <div class="row">
+                <!-- Convocation Module -->
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm animate__animated animate__fadeIn">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary"><i class="fas fa-calendar-check me-2"></i> Convocation des réunions</h5>
+                            <p>Planifiez et envoyez automatiquement des convocations pour les Conseils de gestion.</p>
+                            <form action="/convocation" method="POST">
+                                <div class="mb-3">
+                                    <label for="meeting-date" class="form-label">Date de la réunion</label>
+                                    <input type="datetime-local" class="form-control" id="meeting-date" name="meeting_date" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="meeting-participants" class="form-label">Participants</label>
+                                    <select class="form-select" id="meeting-participants" name="participants" multiple required>
+                                        {% for epn in epns %}
+                                        <option value="{{ epn.id }}">{{ epn.nom }} ({{ epn.sigle }})</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Envoyer convocation</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Performance Dashboard -->
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow-sm animate__animated animate__fadeIn">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary"><i class="fas fa-chart-line me-2"></i> Tableau de bord des performances</h5>
+                            <canvas id="performanceChart" style="max-height: 300px;"></canvas>
+                            <div class="mt-3">
+                                <label for="filter-sector" class="form-label">Filtrer par secteur</label>
+                                <select class="form-select" id="filter-sector">
+                                    <option value="">Tous</option>
+                                    <option value="sante">Santé</option>
+                                    <option value="education">Éducation</option>
+                                    <option value="environnement">Environnement</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Benchmarking -->
+                <div class="col-12 mb-4">
+                    <div class="card shadow-sm animate__animated animate__fadeIn">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary"><i class="fas fa-balance-scale me-2"></i> Benchmarking des EPN</h5>
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>EPN</th>
+                                        <th>Performance</th>
+                                        <th>Classement</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="benchmarking-table">
+                                    {% for epn, performance in epns_with_performance %}
+                                    <tr>
+                                        <td>{{ epn.nom }} ({{ epn.sigle }})</td>
+                                        <td><div class="progress"><div class="progress-bar bg-primary" style="width: {{ performance }}%"></div></div></td>
+                                        <td>#{{ loop.index }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- Document Repository -->
+                <div class="col-12 mb-4">
+                    <div class="card shadow-sm animate__animated animate__fadeIn">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary"><i class="fas fa-folder-open me-2"></i> Base documentaire réglementaire</h5>
+                            <ul class="list-group">
+                                <li class="list-group-item"><a href="#">Statuts DGEPN</a></li>
+                                <li class="list-group-item"><a href="#">PV de réunion - 2025</a></li>
+                                <li class="list-group-item"><a href="#">Rapport annuel 2024</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Institutional Communication -->
+        <div class="tab-pane fade" id="communication" role="tabpanel">
+            <div class="row">
+                <!-- Internal Messaging -->
+                <div class="col-md-6 mb-3">
+                    <div class="card shadow-sm animate__animated animate__fadeIn">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary"><i class="fas fa-envelope me-2"></i> Messagerie interne</h5>
+                            <form action="/message" method="POST">
+                                <div class="mb-3">
+                                    <label for="message-recipient" class="form-label">Destinataire</label>
+                                    <select class="form-select" id="message-recipient" name="recipient" required>
+                                        <option value="all">Tous</option>
+                                        <option value="epn">Directeurs EPN</option>
+                                        <option value="ministere">Ministères de tutelle</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="message-content" class="form-label">Message</label>
+                                    <textarea class="form-control" id="message-content" name="content" rows="4" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Envoyer</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Notifications -->
+                <div class="col-md-6 mb-3">
+                    <div class="card shadow-sm animate__animated animate__fadeIn">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary"><i class="fas fa-bell me-2"></i> Centre de notifications</h5>
+                            <ul class="list-group">
+                                <li class="list-group-item"><i class="fas fa-exclamation-circle text-danger me-2"></i> Rapport financier en retard pour AEJ</li>
+                                <li class="list-group-item"><i class="fas fa-info-circle text-primary me-2"></i> Nouvelle réunion planifiée pour le 15/08/2025</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Internal Journal -->
+                <div class="col-12 mb-3">
+                    <div class="card shadow-sm animate__animated animate__fadeIn">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary"><i class="fas fa-newspaper me-2"></i> Journal interne</h5>
+                            <div class="list-group">
+                                <div class="list-group-item">
+                                    <h6>Nouvelle plateforme numérique</h6>
+                                    <p class="text-muted">Publié le 2025-06-20</p>
+                                    <p>La DGEPN dévoile sa nouvelle plateforme pour les EPN...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Quick Polls -->
+                <div class="col-12 mb-3">
+                    <div class="card shadow-sm animate__animated animate__fadeIn">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary"><i class="fas fa-poll me-2"></i> Sondages rapides</h5>
+                            <form action="/poll" method="POST">
+                                <div class="mb-3">
+                                    <label for="poll-question" class="form-label">Question</label>
+                                    <input type="text" class="form-control" id="poll-question" name="question" placeholder="Ex. Quelle est votre priorité pour 2025 ?" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="poll-options" class="form-label">Options</label>
+                                    <textarea class="form-control" id="poll-options" name="options" rows="3" placeholder="Option 1\nOption 2\nOption 3" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Lancer le sondage</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Document and Report Management -->
+        <div class="tab-pane fade" id="documents" role="tabpanel">
+            <div class="row">
+                <!-- Report Submission -->
+                <div class="col-md-6 mb-3">
+                    <div class="card shadow-sm animate__animated animate__fadeIn">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary"><i class="fas fa-file-upload me-2"></i> Transmission des rapports</h5>
+                            <form action="/upload_report" method="POST" enctype="multipart/form-data">
+                                <div class="mb-3">
+                                    <label for="report-type" class="form-label">Type de rapport</label>
+                                    <select class="form-select" id="report-type" name="report_type" required>
+                                        <option value="financier">Financier</option>
+                                        <option value="activite">Activité</option>
+                                        <option value="rh">RH</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="report-file" class="form-label">Fichier</label>
+                                    <input type="file" class="form-control" id="report-file" name="report_file" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Soumettre</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Document Search -->
+                <div class="col-md-6 mb-3">
+                    <div class="card shadow-sm animate__animated animate__fadeIn">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary"><i class="fas fa-search me-2"></i> Recherche documentaire</h5>
+                            <input type="text" class="form-control mb-3" id="document-search" placeholder="Rechercher un document...">
+                            <ul class="list-group" id="document-results">
+                                <li class="list-group-item">Rapport financier 2024 - AEJ</li>
+                                <li class="list-group-item">PV de réunion - 2025-06</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Validation Workflow -->
+                <div class="col-12 mb-3">
+                    <div class="card shadow-sm animate__animated animate__fadeIn">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary"><i class="fas fa-check-circle me-2"></i> Workflow de validation</h5>
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Document</th>
+                                        <th>Statut</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Rapport financier AEJ</td>
+                                        <td><span class="badge bg-warning">En attente</span></td>
+                                        <td><button class="btn btn-sm btn-primary" onclick="validateDocument('AEJ')">Valider</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EPN Management Support -->
+        <div class="tab-pane fade" id="epn-support" role="tabpanel">
+            <div class="row">
+                <!-- Dynamic Database -->
+                <div class="col-md-6 mb-3">
+                    <div class="card shadow-sm animate__animated animate__fadeIn">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary"><i class="fas fa-database me-2"></i> Base de données EPN</h5>
+                            <input type="text" class="form-control mb-3" id="epn-search" placeholder="Rechercher un EPN...">
+                            <ul class="list-group" id="epn-results">
+                                {% for epn in epns | slice(3) %}
+                                <li class="list-group-item">{{ epn.nom }} ({{ epn.sigle }}) - {{ epn.region }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Alerts -->
+                <div class="col-md-6 mb-3">
+                    <div class="card shadow-sm animate__animated animate__fadeIn">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary"><i class="fas fa-exclamation-triangle me-2"></i> Alertes</h5>
+                            <ul class="list-group">
+                                <li class="list-group-item"><i class="fas fa-exclamation-circle text-danger me-2"></i> Retard de soumission - ANAGED</li>
+                                <li class="list-group-item"><i class="fas fa-info-circle text-primary me-2"></i> Mise à jour SIGFiP requise</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom JavaScript for Intranet -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Performance Chart
+    const ctx = document.getElementById('performanceChart')?.getContext('2d');
+    if (ctx) {
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['AEJ', 'AGEFOP', 'ANAGED', 'ANDE', 'ANP'],
+                datasets: [{
+                    label: 'Performance EPN (%)',
+                    data: [85, 78, 92, 65, 88],
+                    backgroundColor: 'rgba(5, 132, 40, 0.6)',
+                    borderColor: 'rgba(5, 132, 40, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: { beginAtZero: true, max: 100 }
+                },
+                animation: {
+                    duration: 1000,
+                    easing: 'easeInOutQuad'
+                }
+            }
+        });
+    }
+
+    // Filter Sector for Performance Chart
+    const filterSector = document.getElementById('filter-sector');
+    if (filterSector) {
+        filterSector.addEventListener('change', () => {
+            console.log('Filtering by sector:', filterSector.value);
+            // TODO: Implement AJAX call to update chart data
+        });
+    }
+
+    // Document Search
+    const documentSearch = document.getElementById('document-search');
+    const documentResults = document.getElementById('document-results');
+    if (documentSearch && documentResults) {
+        documentSearch.addEventListener('input', () => {
+            const searchValue = documentSearch.value.toLowerCase();
+            documentResults.innerHTML = '';
+            const mockResults = ['Rapport financier 2024 - AEJ', 'PV de réunion - 2025-06'].filter(item => item.toLowerCase().includes(searchValue));
+            mockResults.forEach(item => {
+                const li = document.createElement('li');
+                li.className = 'list-group-item animate__animated animate__fadeIn';
+                li.textContent = item;
+                documentResults.appendChild(li);
+            });
+        });
+    }
+
+    // EPN Search
+    const epnSearch = document.getElementById('epn-search');
+    const epnResults = document.getElementById('epn-results');
+    if (epnSearch && epnResults) {
+        epnSearch.addEventListener('input', () => {
+            const searchValue = epnSearch.value.toLowerCase();
+            epnResults.innerHTML = '';
+            const mockResults = [
+                {% for epn in epns | slice(3) %}
+                "{{ epn.nom }} ({{ epn.sigle }}) - {{ epn.region }}",
+                {% endfor %}
+            ].filter(item => item.toLowerCase().includes(searchValue));
+            mockResults.forEach(item => {
+                const li = document.createElement('li');
+                li.className = 'list-group-item animate__animated animate__fadeIn';
+                li.textContent = item;
+                epnResults.appendChild(li);
+            });
+        });
+    }
+
+    // Validation Function
+    window.validateDocument = function(docId) {
+        console.log('Validating document:', docId);
+        // TODO: Implement AJAX call to validate document
+    };
+});
+</script>
+{% endblock %}

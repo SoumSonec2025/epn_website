@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ actualite.titre }} - DGEPN{% endblock %}
+
+{% block content %}
+    <div class="card shadow-sm">
+        <div class="card-header bg-orange text-white">
+            <h3 class="mb-0">{{ actualite.titre }}</h3>
+        </div>
+        <div class="card-body">
+            <p class="text-muted"><i class="fas fa-calendar-alt"></i> {{ actualite.date }}</p>
+            <p>{{ actualite.contenu }}</p>
+            <!-- Partage social -->
+            <div class="mb-3">
+                <a href="#" class="btn btn-sm btn-outline-orange me-1"><i class="fab fa-twitter"></i> Partager</a>
+                <a href="#" class="btn btn-sm btn-outline-orange"><i class="fab fa-facebook-f"></i> Partager</a>
+            </div>
+            <!-- Commentaires -->
+            <h4 class="text-orange mt-4">Commentaires</h4>
+            <p class="text-muted">Section de commentaires en cours de développement (modération incluse).</p>
+        </div>
+    </div>
+{% endblock %}

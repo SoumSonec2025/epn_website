@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Statistiques - DGEPN{% endblock %}
+
+{% block content %}
+    <h1 class="text-orange mb-4">Statistiques de Fréquentation</h1>
+    <p class="lead text-muted">Analysez les données de fréquentation de notre plateforme (accès restreint).</p>
+
+    <!-- Message d’accès restreint -->
+    <div class="alert alert-warning mb-4">
+        <i class="fas fa-lock me-2"></i> Connectez-vous pour accéder aux statistiques détaillées.
+        <a href="{{ url_for('main.login') }}" class="btn btn-orange ms-2">Se connecter</a>
+    </div>
+
+    <!-- Filtres -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <div class="row g-2">
+                <div class="col-md-6">
+                    <select class="form-select" id="filter-period">
+                        <option value="">Filtrer par période...</option>
+                        <option>Jour</option>
+                        <option>Semaine</option>
+                        <option>Mois</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <select class="form-select" id="filter-source">
+                        <option value="">Filtrer par source...</option>
+                        <option>Direct</option>
+                        <option>Réseaux sociaux</option>
+                        <option>Moteurs de recherche</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Graphiques -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h4 class="text-orange">Tableau de bord</h4>
+            <p class="text-muted">Graphiques interactifs à intégrer avec Chart.js.</p>
+            <div id="stats-placeholder" class="bg-light p-3 text-center">
+                <p>Graphiques en cours de développement</p>
+            </div>
+            <a href="#" class="btn btn-orange mt-3"><i class="fas fa-download"></i> Télécharger le rapport</a>
+        </div>
+    </div>
+{% endblock %}

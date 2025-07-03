@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}Annuaire des Services - DGEPN{% endblock %}
+
+{% block content %}
+    <h1 class="text-orange mb-4 animate__animated animate__fadeInUp"><i class="fas fa-address-book me-2"></i> Annuaire des Services</h1>
+    <p class="lead text-muted mb-5 animate__animated animate__fadeInUp" data-animate-delay="100">Trouvez les contacts des différents départements et services de la DGEPN, ainsi que nos initiatives clés.</p>
+
+    <!-- Recherche -->
+    <div class="card shadow-lg mb-5 animate__animated animate__fadeInUp" data-animate-delay="200">
+        <div class="card-body">
+            <form class="d-flex" id="search-form">
+                <input class="form-control me-2 rounded-pill" type="search" id="search-service" placeholder="Rechercher un service ou contact..." aria-label="Rechercher">
+                <button class="btn btn-orange rounded-pill ripple" type="submit"><i class="fas fa-search me-1"></i> Rechercher</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Sections -->
+    <div class="row mb-5">
+        <!-- Actions de la Gouvernance -->
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow-lg h-100 animate__animated animate__fadeInUp" data-animate-delay="300">
+                <div class="card-header bg-white text-white">
+                    <h5 class="mb-0"><i class="fas fa-balance-scale me-2"></i> Actions de la Gouvernance</h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">Nous promouvons la transparence, la responsabilité et l'efficacité dans la gestion des Établissements Publics Nationaux à travers des politiques rigoureuses et des audits réguliers.</p>
+                </div>
+                <div class="card-footer bg-white border-0">
+                    <a href="mailto:contact@dgepn.ci" class="btn btn-orange btn-sm rounded-pill ripple w-100">Contacter le département</a>
+                </div>
+            </div>
+        </div>
+        <!-- Support EPN -->
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow-lg h-100 animate__animated animate__fadeInUp" data-animate-delay="400">
+                <div class="card-header bg-white text-white">
+                    <h5 class="mb-0"><i class="fas fa-handshake me-2"></i> Support EPN</h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">Nous offrons des formations, des outils de gestion et des services d’accompagnement pour renforcer la performance et la gouvernance des EPN.</p>
+                </div>
+                <div class="card-footer bg-white border-0">
+                    <a href="mailto:contact@dgepn.ci" class="btn btn-orange btn-sm rounded-pill ripple w-100">Contacter le département</a>
+                </div>
+            </div>
+        </div>
+        <!-- Communication -->
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow-lg h-100 animate__animated animate__fadeInUp" data-animate-delay="500">
+                <div class="card-header bg-white text-white">
+                    <h5 class="mb-0"><i class="fas fa-bullhorn me-2"></i> Communication</h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">Nos campagnes de sensibilisation et relations médias assurent une communication claire et efficace avec le public et les parties prenantes.</p>
+                </div>
+                <div class="card-footer bg-white border-0">
+                    <a href="mailto:contact@dgepn.ci" class="btn btn-orange btn-sm rounded-pill ripple w-100">Contacter le département</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Liste des services -->
+    <div class="card shadow-lg animate__animated animate__fadeInUp" data-animate-delay="600">
+        <div class="card-body">
+            <h4 class="text-orange mb-4"><i class="fas fa-users me-2"></i> Contacts des Services</h4>
+            <table class="table table-hover table-borderless">
+                <thead class="bg-orange text-white">
+                    <tr>
+                        <th>Nom</th>
+                        <th>Fonction</th>
+                        <th>Département</th>
+                        <th>Contact</th>
+                    </tr>
+                </thead>
+                <tbody id="service-table">
+                    <tr class="service-row">
+                        <td>Jean Dupont</td>
+                        <td>Directeur</td>
+                        <td>Gouvernance</td>
+                        <td><a href="mailto:jean.dupont@dgepn.ci" class="text-orange">jean.dupont@dgepn.ci</a></td>
+                    </tr>
+                    <tr class="service-row">
+                        <td>Marie Kouassi</td>
+                        <td>Responsable Communication</td>
+                        <td>Communication</td>
+                        <td><a href="mailto:marie.kouassi@dgepn.ci" class="text-orange">marie.kouassi@dgepn.ci</a></td>
+                    </tr>
+                    <tr class="service-row">
+                        <td>Marie Kouassi</td>
+                        <td>Responsable Marketing</td>
+                        <td>Communication</td>
+                        <td><a href="mailto:marie.kouassi@dgepn.ci" class="text-orange">marie.kouassi@dgepn.ci</a></td>
+                    </tr>
+                    <tr class="service-row">
+                        <td>Brou Kouamé</td>
+                        <td>Responsable Communication</td>
+                        <td>Communication</td>
+                        <td><a href="mailto:brou.kouame@dgepn.ci" class="text-orange">brou.kouame@dgepn.ci</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

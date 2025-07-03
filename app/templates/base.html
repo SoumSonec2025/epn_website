@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}DGEPN - Côte d'Ivoire{% endblock %}</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Roboto:wght@700;900&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/img_4.png') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+</head>
+<body>
+    <!-- Loader -->
+    <div id="loader" class="loader"></div>
+
+    <!-- Flash Infos -->
+    {% if flash_infos %}
+    <div id="flash-info" class="flash-info bg-light text-dark position-relative">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div class="flash-info-content">
+                {% for info in flash_infos %}
+                <span class="me-3"><a href="{{ info.link }}" class="text-decoration-none text-green">{{ info.message }}</a></span>
+                {% endfor %}
+            </div>
+            <button id="close-flash" class="btn btn-sm text-dark" aria-label="Fermer"><i class="fas fa-times"></i></button>
+            <!-- Social Media Icons -->
+            <div class="social-icons position-absolute top-0 end-0 p-1" style="background-color:#f28c38;">
+                <a href="https://facebook.com" target="_blank" class="text-white me-1" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://x.com" target="_blank" class="text-white me-1" aria-label="X"><i class="fab fa-x-twitter"></i></a>
+                <a href="https://instagram.com" target="_blank" class="text-white me-1" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="mailto:contact@dgepn.ci" class="text-white" aria-label="Contact"><i class="fas fa-envelope"></i></a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Bande d'annonces -->
+    <div class="announcement text-center position-relative">
+        <div class="container">
+            <div class="scrolling-text">
+                <span class="text-orange">
+                    Inscrivez-vous à notre newsletter pour rester informé des dernières actualités !
+                    <a href="{{ url_for('main.newsletter') }}" class="btn btn-secondary btn-xs ms-2">S'abonner</a>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="{{ url_for('static', filename='img/img_4.png') }}" alt="Logo DGEPN" class="navbar-logo">
+                <span class="fw-bold text-orange">DGEPN</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="{{ url_for('main.index') }}"><i class="fas fa-home me-1"></i> Accueil</a>
+                        <span class="dropdown-toggle" id="accueilDropdown" role="button" aria-expanded="false"></span>
+                        <ul class="dropdown-menu" aria-labelledby="accueilDropdown">
+                            <li><a class="dropdown-item" href="#hero">Bannière</a></li>
+                            <li><a class="dropdown-item" href="#services">Services</a></li>
+                            <li><a class="dropdown-item" href="#actu">Actualités</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="{{ url_for('main.about') }}"><i class="fas fa-info-circle me-1"></i> À propos</a>
+                        <span class="dropdown-toggle" id="aboutDropdown" role="button" aria-expanded="false"></span>
+                        <ul class="dropdown-menu" aria-labelledby="aboutDropdown">
+                            <li><a class="dropdown-item" href="#mission">Mission</a></li>
+                            <li><a class="dropdown-item" href="#organisation">Organisation</a></li>
+                            <li><a class="dropdown-item" href="#historique">Historique</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="{{ url_for('main.services') }}"><i class="fas fa-concierge-bell me-1"></i> Services</a>
+                        <span class="dropdown-toggle" id="servicesDropdown" role="button" aria-expanded="false"></span>
+                        <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
+                            <li><a class="dropdown-item" href="#gouvernance">Gouvernance</a></li>
+                            <li><a class="dropdown-item" href="#support-epn">Support EPN</a></li>
+                            <li><a class="dropdown-item" href="#communication">Communication</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="{{ url_for('main.epn_directory') }}"><i class="fas fa-building me-1"></i> Annuaire EPN</a>
+                        <span class="dropdown-toggle" id="epnDropdown" role="button" aria-expanded="false"></span>
+                        <ul class="dropdown-menu" aria-labelledby="epnDropdown">
+                            <li><a class="dropdown-item" href="#liste-epn">Liste des EPN</a></li>
+                            <li><a class="dropdown-item" href="#carte-epn">Carte des EPN</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="{{ url_for('main.news') }}"><i class="fas fa-newspaper me-1"></i> Actualités</a>
+                        <span class="dropdown-toggle" id="newsDropdown" role="button" aria-expanded="false"></span>
+                        <ul class="dropdown-menu" aria-labelledby="newsDropdown">
+                            <li><a class="dropdown-item" href="#dernieres-actus">Dernières Actualités</a></li>
+                            <li><a class="dropdown-item" href="#archives">Archives</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="{{ url_for('main.events') }}"><i class="fas fa-calendar-alt me-1"></i> Événements</a>
+                        <span class="dropdown-toggle" id="eventsDropdown" role="button" aria-expanded="false"></span>
+                        <ul class="dropdown-menu" aria-labelledby="eventsDropdown">
+                            <li><a class="dropdown-item" href="#calendrier">Calendrier</a></li>
+                            <li><a class="dropdown-item" href="#evenements-passes">Événements Passés</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="{{ url_for('main.documents') }}"><i class="fas fa-file-alt me-1"></i> Documents</a>
+                        <span class="dropdown-toggle" id="documentsDropdown" role="button" aria-expanded="false"></span>
+                        <ul class="dropdown-menu" aria-labelledby="documentsDropdown">
+                            <li><a class="dropdown-item" href="#rapports">Rapports</a></li>
+                            <li><a class="dropdown-item" href="#reglementations">Réglementations</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="{{ url_for('main.suggestions') }}"><i class="fas fa-comment-dots me-1"></i> Suggestions</a>
+                        <span class="dropdown-toggle" id="suggestionsDropdown" role="button" aria-expanded="false"></span>
+                        <ul class="dropdown-menu" aria-labelledby="suggestionsDropdown">
+                            <li><a class="dropdown-item" href="#formulaire">Formulaire</a></li>
+                            <li><a class="dropdown-item" href="#faq">FAQ</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link btn btn-primary text-white ms-2" href="{{ url_for('main.login') }}"><i class="fas fa-sign-in-alt me-1"></i> Intranet</a>
+                        <span class="dropdown-toggle" id="intranetDropdown" role="button" aria-expanded="false"></span>
+                        <ul class="dropdown-menu" aria-labelledby="intranetDropdown">
+                            <li><a class="dropdown-item" href="#gouvernance">Gouvernance</a></li>
+                            <li><a class="dropdown-item" href="#communication">Communication</a></li>
+                            <li><a class="dropdown-item" href="#documents">Gestion Documentaire</a></li>
+                            <li><a class="dropdown-item" href="#epn-support">Support EPN</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Publicité latérale (fixe sur desktop) -->
+    <div class="ad-fixed d-none d-lg-block">
+        <div class="ad-content">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Advertisement" class="img-fluid">
+        </div>
+    </div>
+
+    <!-- Messages flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="container mt-3">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <!-- Contenu principal -->
+    <main class="container py-5">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Chatbot -->
+    <div class="fixed-bottom m-3" style="bottom: 20px; right: 20px;">
+        <button id="chatbot-toggle" class="btn btn-primary rounded-circle shadow" type="button" data-bs-toggle="collapse" data-bs-target="#chatbot" aria-expanded="false" aria-controls="chatbot">
+            <i class="fas fa-comment-dots"></i>
+        </button>
+        <div class="collapse" id="chatbot">
+            <div class="card card-body mt-2 border-0 shadow-sm" style="width: 300px;">
+                <div class="chat-header d-flex justify-content-between align-items-center">
+                    <h5 class="text-orange mb-0">Assistant DGEPN</h5>
+                    <button id="close-chatbot" class="btn btn-sm text-dark" aria-label="Fermer"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="chat-messages" id="chat-messages">
+                    <!-- Messages will be appended here -->
+                </div>
+                <div class="chat-input mt-2">
+                    <div class="input-group">
+                        <input type="text" id="chat-input" class="form-control" placeholder="Tapez votre message..." aria-label="Message">
+                        <button id="chat-send" class="btn btn-primary"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pied de page -->
+    <footer class="bg-green text-white text-center py-4">
+        <div class="container">
+            <p>© 2025 DGEPN - République de Côte d'Ivoire. Tous droits réservés.</p>
+            <p>
+                <a href="{{ url_for('main.newsletter') }}" class="text-white"><i class="fas fa-envelope me-1"></i> Newsletter</a> |
+                <a href="{{ url_for('main.regulations') }}" class="text-white"><i class="fas fa-file-alt me-1"></i> Réglementations</a> |
+                <a href="mailto:contact@dgepn.ci" class="text-white"><i class="fas fa-at me-1"></i> Contact</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <!-- Custom JS -->
+    <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+</body>
+</html>
